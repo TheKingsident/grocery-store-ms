@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+import datetime
 import sys
 import json
 from grocery_load import load_grocery_data
@@ -44,7 +45,44 @@ def main(grocery_file, transaction_file, user_file):
     print(f"Welcome {username}!, you are logged in as a {user_type}.")
 
     while True:
-        if 
+        if user_type == 'manager':
+            print("1. Enter sales transaction")
+            print("2. Add new grocery item")
+            print("3. Logout")
+            choice = input("slect an option: ")
+
+            if choice == '1':
+                grocery_id = input("Enter grocery ID: ")
+                quantity = int(input("Enter quantity sold: "))
+                payment = float(input("Enter payment received: "))
+
+                if grocery_id in grocery_data and grocery_data[grocery_id]['stock'] >= quantity:
+                    datetime_now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                    transaction_data.append({
+                        'date': datetime_now.split()[0],
+                        'time': datetime_now.split()[1],
+                        'id': grocery_id,
+                        'quantity': quantity,
+                        'payment': payment
+                    })
+                    grocery_data[grocery_id]['stock'] -= quantity
+                    print("Transaction recorded successfully.")
+                else:
+                    print("Invalid grocery ID or insufficient stock.")
+            elif choice == '2':
+                new_grocery_id = str(len(grocery_data) + 1)
+                name = input("Enter grocery name: ")
+                price = float(input("Enter grocery price: "))
+                stock = int(input("Enter grocery stock: "))
+
+                grocery_data[new_grocery_id] = {
+                    'name': name,
+                    'price': price,
+                    'stock': stock
+                }
+                print("Grocery item added successfully.")
+            elif choice == '3':
+                break
 
 
 if __name__ == "__main__":
