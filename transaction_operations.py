@@ -38,13 +38,8 @@ def record_sales_transaction(grocery_data, transaction_file, grocery_file):
     """
     Records a sales transaction, updates the grocery stock, and saves the transaction.
     """
-    # Print the header
     print(f"{'ID':<10} {'Name':<20} {'Price':<10} {'Stock':<10}")
-
-    # Print a separator line
     print('-' * 50)
-
-    # Print each grocery item's details
     for grocery_id, grocery_info in grocery_data.items():
         print(f"{grocery_id:<10} {grocery_info['name']:<20} {grocery_info['price']:<10.2f} {grocery_info['stock']:<10}")
 
