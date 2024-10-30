@@ -66,6 +66,18 @@ def main(grocery_file, transaction_file, user_file):
                 break
             elif choice == '4':
                 break
+        elif user_type == 'cashier':
+            print("1. Enter sales transaction")
+            print("2. Exit")
+            choice = input("Select an option: ")
+
+            if choice == '1':
+                record_sales_transaction(grocery_data, transaction_file, grocery_file)
+            elif choice == '2':
+                break
+        else:
+            print("Invalid user type.")
+            break
 
 
 if __name__ == "__main__":
