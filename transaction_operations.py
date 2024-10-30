@@ -31,9 +31,12 @@ def save_transaction_data(transaction_file, transactions):
         A CSV file with the transaction data, including a header row with the field names.
     """
 
-    with open(transaction_file, mode='w', newline='') as file:
+    with open(transaction_file, mode='a', newline='') as file:
         writer = csv.DictWriter(file,
-                                fieldnames=['date', 'time', 'id', 'payment'])
-        writer.writeheader()
+                                fieldnames=['date', 'time', 'id', 'quantity', 'payment'])
+        file_empty = file.tell() == 0
+
+        if file_empty:
+            writer.writeheader()
         for transaction in transactions:
             writer.writerow(transaction)

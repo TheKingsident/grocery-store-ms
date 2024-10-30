@@ -3,9 +3,11 @@
 from datetime import datetime
 import sys
 import json
-from grocery_load import load_grocery_data
-from transaction_load import load_transaction_data
+from grocery_operations import load_grocery_data
+from transaction_operations import load_transaction_data
 from users_load import load_user_data
+from grocery_operations import save_grocery_data
+from transaction_operations import save_transaction_data
 
 def authenticate_user(users):
     """
@@ -49,22 +51,22 @@ def main(grocery_file, transaction_file, user_file):
             print("1. Enter sales transaction")
             print("2. Add new grocery item")
             print("3. Logout")
-            choice = input("slect an option: ")
+            choice = input("Select an option: ")
 
             if choice == '1':
                 grocery_id = input("Enter grocery ID: ")
                 quantity = int(input("Enter quantity sold: "))
-                payment = float(input("Enter payment received: "))
 
                 if grocery_id in grocery_data and grocery_data[grocery_id]['stock'] >= quantity:
-                    datetime_now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-                    transaction_data.append({
+                    datetime_now = datetime.now().strftime("%d/%m/%Y %I:%M:%S %p")
+                    transaction_data = {
                         'date': datetime_now.split()[0],
-                        'time': datetime_now.split()[1],
+                        'time': datetime_now.split()[1] +' '+ datetime_now.split()[2],
                         'id': grocery_id,
                         'quantity': quantity,
-                        'payment': payment
-                    })
+                        'payment': quantity * round(grocery_data[grocery_id]['price'], 2)
+                    }
+                    save_transaction_data(transaction_file, [transaction_data])
                     grocery_data[grocery_id]['stock'] -= quantity
                     print("Transaction recorded successfully.")
                 else:
