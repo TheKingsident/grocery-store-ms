@@ -4,10 +4,13 @@ from datetime import datetime
 import sys
 import json
 from grocery_operations import load_grocery_data
+from grocery_operations import edit_grocery_item
+from grocery_operations import add_new_grocery_item
 from transaction_operations import load_transaction_data
+from transaction_operations import record_sales_transaction
 from users_load import load_user_data
-from grocery_operations import save_grocery_data
-from transaction_operations import save_transaction_data
+
+
 
 def authenticate_user(users):
     """
@@ -50,41 +53,18 @@ def main(grocery_file, transaction_file, user_file):
         if user_type == 'manager':
             print("1. Enter sales transaction")
             print("2. Add new grocery item")
-            print("3. Logout")
+            print("3. Edit grocery item")
+            print("4. Exit")
             choice = input("Select an option: ")
 
             if choice == '1':
-                grocery_id = input("Enter grocery ID: ")
-                quantity = int(input("Enter quantity sold: "))
-
-                if grocery_id in grocery_data and grocery_data[grocery_id]['stock'] >= quantity:
-                    datetime_now = datetime.now().strftime("%d/%m/%Y %I:%M:%S %p")
-                    transaction_data = {
-                        'date': datetime_now.split()[0],
-                        'time': datetime_now.split()[1] +' '+ datetime_now.split()[2],
-                        'id': grocery_id,
-                        'quantity': quantity,
-                        'payment': quantity * round(grocery_data[grocery_id]['price'], 2)
-                    }
-                    save_transaction_data(transaction_file, [transaction_data])
-                    grocery_data[grocery_id]['stock'] -= quantity
-                    print("Transaction recorded successfully.")
-                else:
-                    print("Invalid grocery ID or insufficient stock.")
+                record_sales_transaction(grocery_data, transaction_file, grocery_file)
             elif choice == '2':
-                new_grocery_id = str(len(grocery_data) + 1)
-                name = input("Enter grocery name: ")
-                price = float(input("Enter grocery price: "))
-                stock = int(input("Enter grocery stock: "))
-
-                grocery_data[new_grocery_id] = {
-                    'name': name,
-                    'price': price,
-                    'stock': stock
-                }
-                save_grocery_data(grocery_file, grocery_data)
-                print("Grocery item added successfully.")
+                add_new_grocery_item(grocery_file, grocery_data)
             elif choice == '3':
+                edit_grocery_item(grocery_file, grocery_data)
+                break
+            elif choice == '4':
                 break
 
 

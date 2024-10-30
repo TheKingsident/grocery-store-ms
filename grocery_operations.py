@@ -49,12 +49,10 @@ def save_grocery_data(grocery_file, grocery_data):
         }
         save_grocery_data('groceries.csv', grocery_data)
     """
-    with open(grocery_file, mode='a', newline='') as file:
+    with open(grocery_file, mode='w', newline='') as file:
         writer = csv.DictWriter(file, fieldnames=['id', 'name',
                                                   'price', 'stock'])
-        file_empty = file.tell() == 0
-        if file_empty:
-            writer.writeheader()
+        writer.writeheader()
         for grocery_id, grocery_info in grocery_data.items():
             writer.writerow({
                 'id': grocery_id,
@@ -62,3 +60,36 @@ def save_grocery_data(grocery_file, grocery_data):
                 'price': grocery_info['price'],
                 'stock': grocery_info['stock']
             })
+
+def add_new_grocery_item(grocery_file, grocery_data):
+    new_grocery_id = str(len(grocery_data) + 1)
+    name = input("Enter grocery name: ")
+    price = float(input("Enter grocery price: "))
+    stock = int(input("Enter grocery stock: "))
+
+    grocery_data[new_grocery_id] = {
+        'name': name,
+        'price': price,
+        'stock': stock
+    }
+    save_grocery_data(grocery_file, grocery_data)
+    print("Grocery item added successfully.")
+
+def edit_grocery_item(grocery_file, grocery_data):
+    grocery_id = input("Enter grocery ID to edit: ")
+    if grocery_id not in grocery_data:
+        print("Grocery ID not found.")
+        return
+    
+    print(f"Editing {grocery_data[grocery_id]['name']} with ID {grocery_id}")
+
+    name  = input(f"New name for {grocery_data[grocery_id]['name']}: ") or grocery_data[grocery_id]['name']
+    price = input(f"Current price: {grocery_data[grocery_id]['price']}. New price: ") or grocery_data[grocery_id]['price']
+    stock = input(f"Current stock: {grocery_data[grocery_id]['stock']}. New stock: ") or grocery_data[grocery_id]['stock']
+
+    grocery_data[grocery_id]["name"] = name
+    grocery_data[grocery_id]["price"] = float(price)
+    grocery_data[grocery_id]["stock"] = int(stock)
+
+    save_grocery_data(grocery_file, grocery_data)
+    print("Grocery item Updated successfully.")
