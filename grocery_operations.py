@@ -49,10 +49,12 @@ def save_grocery_data(grocery_file, grocery_data):
         }
         save_grocery_data('groceries.csv', grocery_data)
     """
-    with open(grocery_file, mode='w', newline='') as file:
+    with open(grocery_file, mode='a', newline='') as file:
         writer = csv.DictWriter(file, fieldnames=['id', 'name',
                                                   'price', 'stock'])
-        writer.writeheader()
+        file_empty = file.tell() == 0
+        if file_empty:
+            writer.writeheader()
         for grocery_id, grocery_info in grocery_data.items():
             writer.writerow({
                 'id': grocery_id,

@@ -82,6 +82,7 @@ def main(grocery_file, transaction_file, user_file):
                     'price': price,
                     'stock': stock
                 }
+                save_grocery_data(grocery_file, grocery_data)
                 print("Grocery item added successfully.")
             elif choice == '3':
                 break
