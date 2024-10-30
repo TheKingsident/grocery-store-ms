@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-import datetime
+from datetime import datetime
 import sys
 import json
 from grocery_load import load_grocery_data
