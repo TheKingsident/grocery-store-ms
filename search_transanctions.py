@@ -1,3 +1,6 @@
+from datetime import datetime
+
+
 def display_transactions(transactions):
     if not transactions:
         print("No matching transactions found.")
@@ -24,3 +27,13 @@ def search_by_name(transactions, name):
     ]
     display_transactions(matching_transactions)
 
+def search_by_name_and_date(transactions, name, start_date, end_date):
+    start_date = datetime.strptime(start_date, "%d/%m/%Y")
+    end_date = datetime.strptime(end_date, "%d/%m/%Y")
+
+    matching_transactions = []
+    for t in transactions:
+        transaction_date = datetime.strptime(t['date'], "%d/%m/%Y")
+        if name.lower() in t['name'].lower() and start_date <= transaction_date <= end_date:
+            matching_transactions.append(t)
+    display_transactions(matching_transactions)
