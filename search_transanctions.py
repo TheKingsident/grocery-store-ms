@@ -2,6 +2,23 @@ from datetime import datetime
 
 
 def display_transactions(transactions):
+    """
+    Display a list of transactions in a formatted table.
+    Parameters:
+    transactions (list of dict): A list of dictionaries where each dictionary represents a transaction.
+        Each dictionary should have the following keys:
+        - 'date' (str): The date of the transaction.
+        - 'time' (str): The time of the transaction.
+        - 'id' (str): The transaction ID.
+        - 'quantity' (str): The quantity of items in the transaction.
+        - 'payment' (str): The payment amount for the transaction.
+    Returns:
+    None
+    Prints:
+    A formatted table of transactions. If the payment value is not a valid number, an error message is printed.
+    If no transactions are provided, a message indicating no matching transactions is printed.
+    """
+
     if not transactions:
         print("\nNo matching transactions found.\n")
         return
@@ -33,13 +50,13 @@ def search_by_name(transactions, groceries, name):
     ]
     display_transactions(matching_transactions)
 
-def search_by_name_and_date(transactions, name, start_date, end_date):
+def search_by_name_and_date(transactions, groceries, name, start_date, end_date):
     start_date = datetime.strptime(start_date, "%d/%m/%Y")
     end_date = datetime.strptime(end_date, "%d/%m/%Y")
 
     matching_transactions = []
     for t in transactions:
         transaction_date = datetime.strptime(t['date'], "%d/%m/%Y")
-        if name.lower() in t['name'].lower() and start_date <= transaction_date <= end_date:
+        if t['id'] in groceries and name.lower() in groceries[t['id']['name']].lower() and start_date <= transaction_date <= end_date:
             matching_transactions.append(t)
     display_transactions(matching_transactions)

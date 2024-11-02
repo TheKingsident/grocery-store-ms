@@ -111,7 +111,7 @@ def main(grocery_file, transaction_file, user_file):
                 search_name = input("Enter product name: ")
                 start_date = input("Enter start date (dd/mm/yyyy): ")
                 end_date = input("Enter end date (dd/mm/yyyy): ")
-                search_by_name_and_date(transaction_data, search_name, start_date, end_date)
+                search_by_name_and_date(transaction_data, grocery_data, search_name, start_date, end_date)
 
             elif choice == '5':
                 print("Exiting program")
