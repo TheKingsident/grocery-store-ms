@@ -96,7 +96,7 @@ def main(grocery_file, transaction_file, user_file):
                 display_product_sales(transaction_data,
                                       grocery_data,
                                       grocery_id,
-                                      start_date,
+                                      start_month,
                                       end_month)
 
             elif choice == '9':
