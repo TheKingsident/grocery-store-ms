@@ -37,20 +37,68 @@ def display_transactions(transactions):
 def search_by_date(transactions, date):
     """
     Searches transactions by date and returns a list of transactions on that date.
+    Args:
+        transactions (list of dict): List of transaction records.
+        date (str): The date to search for in 'dd/mm/yyyy' format.
     """
-    matching_transactions = [
-        t for t in transactions if t['date'] == date
-    ]
-    display_transactions(matching_transactions)
+    try:
+        datetime.strptime(date, "%d/%m/%Y")
+
+        matching_transactions = [
+            t for t in transactions if t.get('date') == date
+        ]
+
+        if matching_transactions:
+            display_transactions(matching_transactions)
+        else:
+            print(f"\nNo transactions found for the date: {date}")
+
+    except ValueError as ve:
+        print(f"\nError: Invalid date format. Please use 'dd/mm/yyyy'. Details: {ve}")
+
+    except KeyError as ke:
+        print(f"\nError: Missing expected field in transaction data. Details: {ke}")
+
+    except Exception as e:
+        print(f"\nAn unexpected error occurred: {e}")
 
 def search_by_name(transactions, groceries, name):
-    matching_transactions = [
-        t for t in transactions
-        if t['id'] in groceries and name.lower() in groceries[t['id']]['name'].lower()
-    ]
-    display_transactions(matching_transactions)
+    """
+    Searches transactions by grocery name and returns a list of matching transactions.
+    Args:
+        transactions (list of dict): List of transaction records.
+        groceries (dict): Dictionary with grocery IDs as keys and grocery info as values.
+        name (str): The grocery name or partial name to search for.
+    """
+    try:
+        matching_transactions = [
+            t for t in transactions
+            if t.get('id') in groceries and name.lower() in groceries[t['id']].get('name', '').lower()
+        ]
+
+        if matching_transactions:
+            display_transactions(matching_transactions)
+        else:
+            print(f"\nNo transactions found for grocery name containing: '{name}'")
+
+    except KeyError as ke:
+        print(f"\nError: Missing expected field in transaction or grocery data. Details: {ke}")
+
+    except Exception as e:
+        print(f"\nAn unexpected error occurred: {e}")
+
+from datetime import datetime
 
 def search_by_name_and_date(transactions, groceries, name, start_date, end_date):
+    """
+    Searches transactions by grocery name and date range, and returns a list of matching transactions.
+    Args:
+        transactions (list of dict): List of transaction records.
+        groceries (dict): Dictionary with grocery IDs as keys and grocery info as values.
+        name (str): The grocery name or partial name to search for.
+        start_date (str): Start date in DD/MM/YYYY format.
+        end_date (str): End date in DD/MM/YYYY format.
+    """
     try:
         start_date = datetime.strptime(start_date, "%d/%m/%Y")
         end_date = datetime.strptime(end_date, "%d/%m/%Y")
@@ -61,10 +109,26 @@ def search_by_name_and_date(transactions, groceries, name, start_date, end_date)
     matching_transactions = []
     for t in transactions:
         try:
-            transaction_date = datetime.strptime(t['date'], "%d/%m/%Y")
-            if t['id'] in groceries and name.lower() in groceries[t['id']]['name'].lower() and start_date <= transaction_date <= end_date:
+            transaction_date = datetime.strptime(t.get('date', ''), "%d/%m/%Y")
+            
+            if (
+                t.get('id') in groceries and
+                name.lower() in groceries[t['id']].get('name', '').lower() and
+                start_date <= transaction_date <= end_date
+            ):
                 matching_transactions.append(t)
+        
         except ValueError:
-            print(f"\nError: Incorrect date format in transaction {t['id']}. Skipping this transaction.")
+            print(f"\nError: Incorrect date format in transaction {t.get('id', 'unknown')}. Skipping this transaction.")
             continue
-    display_transactions(matching_transactions)
+        except KeyError as ke:
+            print(f"\nError: Missing expected field ({ke}) in transaction or grocery data. Skipping transaction {t.get('id', 'unknown')}.")
+            continue
+        except Exception as e:
+            print(f"\nAn unexpected error occurred while processing transaction {t.get('id', 'unknown')}: {e}")
+            continue
+
+    if matching_transactions:
+        display_transactions(matching_transactions)
+    else:
+        print(f"\nNo transactions found for grocery name containing '{name}' within the specified date range.")

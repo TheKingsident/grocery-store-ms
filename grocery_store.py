@@ -86,7 +86,7 @@ def main(grocery_file, transaction_file, user_file):
                 break
 
             else:
-                print("Invalid selection. Please try again.")
+                print("\nInvalid selection. Please try again.")
 
         elif user_type == 'cashier':
             print("Menu:")
@@ -122,7 +122,7 @@ def main(grocery_file, transaction_file, user_file):
                 print("\nInvalid selection. Please try again.")
 
         else:
-            print("Invalid user type.")
+            print("\nInvalid user type.")
             break
 
 
