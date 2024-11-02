@@ -38,10 +38,11 @@ def record_sales_transaction(grocery_data, transaction_file, grocery_file):
     """
     Records a sales transaction, updates the grocery stock, and saves the transaction.
     """
-    print(f"{'ID':<10} {'Name':<20} {'Price':<10} {'Stock':<10}")
+    print(f"\n{'ID':<10} {'Name':<20} {'Price':<10} {'Stock':<10}")
     print('-' * 50)
     for grocery_id, grocery_info in grocery_data.items():
         print(f"{grocery_id:<10} {grocery_info['name']:<20} {grocery_info['price']:<10.2f} {grocery_info['stock']:<10}")
+    print("\n")
 
     try:
         grocery_id = input("Enter grocery ID: ")

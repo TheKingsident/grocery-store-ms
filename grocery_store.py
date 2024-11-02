@@ -73,7 +73,7 @@ def main(grocery_file, transaction_file, user_file):
             
             elif choice == "5":
                 search_name = search_name = input("Enter grocery name: ")
-                search_by_name(transaction_data, search_name)
+                search_by_name(transaction_data, grocery_data, search_name)
 
             elif choice == "6":
                 search_name = input("Enter product name: ")
@@ -105,7 +105,7 @@ def main(grocery_file, transaction_file, user_file):
             
             elif choice == "3":
                 search_name = search_name = input("Enter grocery name: ")
-                search_by_name(transaction_data, search_name)
+                search_by_name(transaction_data, grocery_data, search_name)
 
             elif choice == "4":
                 search_name = input("Enter product name: ")

@@ -3,13 +3,18 @@ from datetime import datetime
 
 def display_transactions(transactions):
     if not transactions:
-        print("No matching transactions found.")
+        print("\nNo matching transactions found.\n")
         return
     
-    print(f"{'Date':<15} {'Time':<10} {'ID':<5} {'Quantity':<10} {'Payment':<10}")
+    print(f"\n\n{'Date':<15} {'Time':<10} {'ID':<5} {'Quantity':<10} {'Payment':<10}")
     print('-' * 50)
     for t in transactions:
-        print(f"{t['date']:<15} {t['time']:<10} {t['id']:<5} {t['quantity']:<10} {t['payment']:<10.2f}")
+        try:
+            payment = float(t['payment'])
+            print(f"{t['date']:<15} {t['time']:<10} {t['id']:<5} {t['quantity']:<10} {payment:<10.2f}")
+        except ValueError:
+            print("Error: Payment value is not a valid number.")
+    print('\n')
 
 
 def search_by_date(transactions, date):
@@ -21,9 +26,10 @@ def search_by_date(transactions, date):
     ]
     display_transactions(matching_transactions)
 
-def search_by_name(transactions, name):
+def search_by_name(transactions, groceries, name):
     matching_transactions = [
-        t for t in transactions if name.lower() in transactions['name'].lower()
+        t for t in transactions
+        if t['id'] in groceries and name.lower() in groceries[t['id']]['name'].lower()
     ]
     display_transactions(matching_transactions)
 
