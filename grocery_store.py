@@ -2,7 +2,7 @@
 
 import sys
 import json
-from display_transactions import display_monthly_sales
+from display_transactions import display_monthly_sales, display_product_sales
 from grocery_operations import load_grocery_data, edit_grocery_item, add_new_grocery_item
 from search_transanctions import search_by_date, search_by_name, search_by_name_and_date
 from transaction_operations import load_transaction_data, record_sales_transaction
@@ -88,6 +88,16 @@ def main(grocery_file, transaction_file, user_file):
                 start_month = input("\nEnter start month (mm/yyyy): ")
                 end_month = input("Enter end month (mm/yyyy): ")
                 display_monthly_sales(transaction_data, start_month, end_month)
+
+            elif choice == "8":
+                grocery_id = input("\nEnter grocery ID between 1 - 19: ")
+                start_month = input("Enter start month (mm/yyyy): ")
+                end_month = input("Enter end month (mm/yyyy): ")
+                display_product_sales(transaction_data,
+                                      grocery_data,
+                                      grocery_id,
+                                      start_date,
+                                      end_month)
 
             elif choice == '9':
                 print("\nExiting program")
