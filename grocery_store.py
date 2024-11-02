@@ -68,57 +68,58 @@ def main(grocery_file, transaction_file, user_file):
                 edit_grocery_item(grocery_file, grocery_data)
 
             elif choice == '4':
-                search_date = input("Enter date (dd/mm/yyyy): ")
+                search_date = input("\nEnter date (dd/mm/yyyy): ")
                 search_by_date(transaction_data, search_date)
             
             elif choice == "5":
-                search_name = search_name = input("Enter grocery name: ")
+                search_name = search_name = input("\nEnter grocery name: ")
                 search_by_name(transaction_data, grocery_data, search_name)
 
             elif choice == "6":
-                search_name = input("Enter product name: ")
+                search_name = input("\nEnter product name: ")
                 start_date = input("Enter start date (dd/mm/yyyy): ")
                 end_date = input("Enter end date (dd/mm/yyyy): ")
-                search_by_name_and_date(transaction_data, search_name, start_date, end_date)
+                search_by_name_and_date(transaction_data, grocery_data, search_name, start_date, end_date)
 
             elif choice == '7':
-                print("Exiting program")
+                print("\nExiting program")
                 break
 
             else:
                 print("Invalid selection. Please try again.")
 
         elif user_type == 'cashier':
+            print("Menu:")
             print("1. Enter sales transaction")
             print("2. Search transactions by date")
             print("3. Search transactions by product name")
             print("4. Search transactions by product name and date range")
             print("5. Exit\n")
-            choice = input("Select an option: ")
+            choice = input("\nSelect an option: ")
 
             if choice == '1':
                 record_sales_transaction(grocery_data, transaction_file, grocery_file)
             
             elif choice == '2':
-                search_date = input("Enter date (dd/mm/yyyy): ")
+                search_date = input("\nEnter date (dd/mm/yyyy): ")
                 search_by_date(transaction_data, search_date)
             
             elif choice == "3":
-                search_name = search_name = input("Enter grocery name: ")
+                search_name = search_name = input("\nEnter grocery name: ")
                 search_by_name(transaction_data, grocery_data, search_name)
 
             elif choice == "4":
-                search_name = input("Enter product name: ")
+                search_name = input("\nEnter product name: ")
                 start_date = input("Enter start date (dd/mm/yyyy): ")
                 end_date = input("Enter end date (dd/mm/yyyy): ")
                 search_by_name_and_date(transaction_data, grocery_data, search_name, start_date, end_date)
 
             elif choice == '5':
-                print("Exiting program")
+                print("\nExiting program")
                 break
 
             else:
-                print("Invalid selection. Please try again.")
+                print("\nInvalid selection. Please try again.")
 
         else:
             print("Invalid user type.")
@@ -127,7 +128,7 @@ def main(grocery_file, transaction_file, user_file):
 
 if __name__ == "__main__":
     if len(sys.argv) != 4:
-        print("Usage: python grocery_store.py <transaction_file> <grocery_file> <user_file>")
+        print("\nUsage: python grocery_store.py <transaction_file> <grocery_file> <user_file>")
         sys.exit(1)
 
     main(sys.argv[1], sys.argv[2], sys.argv[3])
