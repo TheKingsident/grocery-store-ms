@@ -6,6 +6,7 @@ import json
 from grocery_operations import load_grocery_data
 from grocery_operations import edit_grocery_item
 from grocery_operations import add_new_grocery_item
+from search_transanctions import search_by_date, search_by_name, search_by_name_and_date
 from transaction_operations import load_transaction_data
 from transaction_operations import record_sales_transaction
 from users_load import load_user_data
@@ -51,30 +52,78 @@ def main(grocery_file, transaction_file, user_file):
 
     while True:
         if user_type == 'manager':
+            print("Menu:")
             print("1. Enter sales transaction")
             print("2. Add new grocery item")
             print("3. Edit grocery item")
-            print("4. Exit")
+            print("4. Search transactions by date")
+            print("5. Search transactions by product name")
+            print("6. Search transactions by product name and date range")
+            print("7. Exit")
             choice = input("Select an option: ")
 
             if choice == '1':
                 record_sales_transaction(grocery_data, transaction_file, grocery_file)
+
             elif choice == '2':
                 add_new_grocery_item(grocery_file, grocery_data)
+
             elif choice == '3':
                 edit_grocery_item(grocery_file, grocery_data)
-                break
+
             elif choice == '4':
+                search_date = input("Enter date (dd/mm/yyyy): ")
+                search_by_date(transaction_data, search_date)
+            
+            elif choice == "5":
+                search_name = search_name = input("Enter grocery name: ")
+                search_by_name(transaction_data, search_name)
+
+            elif choice == "6":
+                search_name = input("Enter product name: ")
+                start_date = input("Enter start date (dd/mm/yyyy): ")
+                end_date = input("Enter end date (dd/mm/yyyy): ")
+                search_by_name_and_date(transaction_data, search_name, start_date, end_date)
+
+            elif choice == '7':
+                print("Exiting program")
                 break
+
+            else:
+                print("Invalid selection. Please try again.")
+
         elif user_type == 'cashier':
             print("1. Enter sales transaction")
-            print("2. Exit")
+            print("2. Search transactions by date")
+            print("3. Search transactions by product name")
+            print("4. Search transactions by product name and date range")
+            print("5. Exit")
             choice = input("Select an option: ")
 
             if choice == '1':
                 record_sales_transaction(grocery_data, transaction_file, grocery_file)
+            
             elif choice == '2':
+                search_date = input("Enter date (dd/mm/yyyy): ")
+                search_by_date(transaction_data, search_date)
+            
+            elif choice == "3":
+                search_name = search_name = input("Enter grocery name: ")
+                search_by_name(transaction_data, search_name)
+
+            elif choice == "4":
+                search_name = input("Enter product name: ")
+                start_date = input("Enter start date (dd/mm/yyyy): ")
+                end_date = input("Enter end date (dd/mm/yyyy): ")
+                search_by_name_and_date(transaction_data, search_name, start_date, end_date)
+
+            elif choice == '5':
+                print("Exiting program")
                 break
+
+            else:
+                print("Invalid selection. Please try again.")
+
         else:
             print("Invalid user type.")
             break
