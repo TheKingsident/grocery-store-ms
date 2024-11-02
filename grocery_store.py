@@ -44,7 +44,7 @@ def main(grocery_file, transaction_file, user_file):
         print("Authentication failed")
         return
     
-    print(f"Welcome {username}!, you are logged in as a {user_type}.")
+    print(f"\nWelcome {username}!, you are logged in as a {user_type}.\n")
 
     while True:
         if user_type == 'manager':
@@ -55,7 +55,7 @@ def main(grocery_file, transaction_file, user_file):
             print("4. Search transactions by date")
             print("5. Search transactions by product name")
             print("6. Search transactions by product name and date range")
-            print("7. Exit")
+            print("7. Exit\n")
             choice = input("Select an option: ")
 
             if choice == '1':
@@ -93,7 +93,7 @@ def main(grocery_file, transaction_file, user_file):
             print("2. Search transactions by date")
             print("3. Search transactions by product name")
             print("4. Search transactions by product name and date range")
-            print("5. Exit")
+            print("5. Exit\n")
             choice = input("Select an option: ")
 
             if choice == '1':
