@@ -1,14 +1,10 @@
 #!/usr/bin/env python3
 
-from datetime import datetime
 import sys
 import json
-from grocery_operations import load_grocery_data
-from grocery_operations import edit_grocery_item
-from grocery_operations import add_new_grocery_item
+from grocery_operations import load_grocery_data, edit_grocery_item, add_new_grocery_item
 from search_transanctions import search_by_date, search_by_name, search_by_name_and_date
-from transaction_operations import load_transaction_data
-from transaction_operations import record_sales_transaction
+from transaction_operations import load_transaction_data, record_sales_transaction
 from users_load import load_user_data
 
 
