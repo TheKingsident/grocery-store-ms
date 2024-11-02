@@ -39,12 +39,53 @@ def plot_graph(monthly_sales, title):
 
 def display_monthly_sales(transactions, start_month, end_month):
     try:
+        start_date = datetime.strptime(start_month, "%Y/%m")
+        end_date = datetime.strptime(end_month, "%Y/%m")
+    except ValueError:
+        print("Error: Please use YYYY/MM format for start and end months.")
+        return
+    
+    monthly_sales = {}
+    for t in transactions:
+        transaction_date = datetime.strptime(t['date'], "%d/%m/%Y")
+        if start_date <= transaction_date <= end_date:
+            month = transaction_date.strftime("%y-%m")
+            if month not in monthly_sales:
+                monthly_sales[month] = {'value': 0, 'count': 0}
+            monthly_sales[month]['value'] += t['payment']
+            monthly_sales[month]['count'] += 1
+    
+    grapth_tile = "Monthly Sales Values and Number of Sales"
+    plot_graph(monthly_sales, grapth_tile)
+
+def display_product_sales(
+        transactions,
+        groceries,
+        grocery_id,
+        start_month,
+        end_month
+    ):
+    if grocery_id not in groceries:
+        print("Error: Invalid product ID.")
+        return
+    
+    try:
         start_date = datetime.strptime(start_month, "%Y-%m")
         end_date = datetime.strptime(end_month, "%Y-%m")
     except ValueError:
         print("Error: Please use YYYY-MM format for start and end months.")
         return
-    
+
+    # Filter and group transactions by month for the specified product
     monthly_sales = {}
-    for to in transactions:
+    for t in transactions:
         transaction_date = datetime.strptime(t['date'], "%d/%m/%Y")
+        if t['id'] == grocery_id and start_date <= transaction_date <= end_date:
+            month = transaction_date.strftime("%Y-%m")
+            if month not in monthly_sales:
+                monthly_sales[month] = {'value': 0, 'count': 0}
+            monthly_sales[month]['value'] += t['payment']
+            monthly_sales[month]['count'] += 1
+
+    graph_title = f"Monthly Sales for grocery ID: {grocery_id} - {groceries[grocery_id]['name']}."
+    plot_graph(monthly_sales, graph_title)
