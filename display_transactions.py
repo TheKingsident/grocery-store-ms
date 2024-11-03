@@ -19,10 +19,10 @@ def plot_bar_chart(sorted_sales, product_names):
     ax.set_ylabel("Total Sales Value")
     plt.xticks(rotation=45)
     plt.tight_layout()
-    plt.savefig("monthly_sales.png")
+    plt.savefig("total_monthly_sales.png")
     plt.show()
 
-def plot_graph(monthly_sales, title):
+def plot_graph(monthly_sales, title, save_name):
     months = sorted(monthly_sales.keys())
     sales_values = [monthly_sales[month]['value'] for month in months]
     sales_counts = [monthly_sales[month]['count'] for month in months]
@@ -38,7 +38,7 @@ def plot_graph(monthly_sales, title):
     ax.legend()
     plt.xticks(rotation=45)
     plt.tight_layout()
-    plt.savefig("monthly_sales.png")
+    plt.savefig(save_name)
     plt.show()
 
 def display_monthly_sales(transactions, start_month, end_month):
@@ -61,7 +61,8 @@ def display_monthly_sales(transactions, start_month, end_month):
             monthly_sales[month]['count'] += 1
     
     grapth_tile = "Monthly Sales Values and Number of Sales"
-    plot_graph(monthly_sales, grapth_tile)
+    save_file_name = f"{start_date.strftime('%Y-%m-%d')}_to_{end_date.strftime('%Y-%m-%d')}_sales"
+    plot_graph(monthly_sales, grapth_tile, save_file_name)
 
 def display_product_sales(
         transactions,
@@ -70,6 +71,7 @@ def display_product_sales(
         start_month,
         end_month
     ):
+    
     if grocery_id not in groceries:
         print("Error: Invalid product ID.")
         return
@@ -81,7 +83,6 @@ def display_product_sales(
         print("Error: Please use YYYY-MM format for start and end months.")
         return
 
-    # Filter and group transactions by month for the specified product
     monthly_sales = {}
     for t in transactions:
         transaction_date = datetime.strptime(t['date'], "%d/%m/%Y")
@@ -93,5 +94,30 @@ def display_product_sales(
             monthly_sales[month]['stock'] += int(t['quantity'])
             monthly_sales[month]['count'] += 1
 
+    file_start_date = start_date.strftime('%Y-%m-%d')
+    file_end_date = end_date.strftime('%Y-%m-%d')
+
+
+
     graph_title = f"Monthly Sales for {groceries[grocery_id]['name']}. Grocery ID: {grocery_id}."
-    plot_graph(monthly_sales, graph_title)
+    save_file_name = f"{grocery_id}_{groceries[grocery_id]['name']}_{file_start_date}_to_{file_end_date}_sales"
+    plot_graph(monthly_sales, graph_title, save_file_name)
+
+def display_total_sales(transactions, groceries, start_date, end_date):
+    try:
+        start_date = datetime.strptime(start_date, "%d/%m/%Y")
+        end_date = datetime.strptime(end_date, "%d/%m/%Y")
+    except ValueError:
+        print("\nError: Please use DD/MM/YYYY format for start and end dates.")
+        return
+    
+    grocery_total_sales = {}
+    for t in transactions:
+        transaction_date = datetime.strptime(t['date'], "%d/%m/%Y")
+        if start_date <= transaction_date <= end_date:
+            grocery_id = t['id']
+            grocery_total_sales[grocery_id] =  grocery_total_sales.get(grocery_id, 0) + t['payment']
+    
+    sorted_sales = sorted(grocery_total_sales.items(), key=lambda x: x[1], reverse=True)
+    grocery_names = [groceries[grocery_id]['name'] for grocery_id, _ in sorted_sales]
+    plot_bar_chart(sorted_sales, grocery_names)
