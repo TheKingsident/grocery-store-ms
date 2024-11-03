@@ -138,44 +138,61 @@ def display_monthly_sales(transactions, start_month, end_month):
     save_file_name = f"{start_date.strftime('%Y-%m-%d')}_to_{end_date.strftime('%Y-%m-%d')}_sales"
     plot_graph(monthly_sales, grapth_title, save_file_name)
 
-def display_product_sales(
-        transactions,
-        groceries,
-        grocery_id,
-        start_month,
-        end_month
-    ):
-    
+def display_product_sales(transactions, groceries, grocery_id, start_month, end_month):
+    # Check if grocery_id exists in groceries
     if grocery_id not in groceries:
         print("Error: Invalid product ID.")
         return
-    
+
+    # Try to parse the start and end dates
     try:
         start_date = datetime.strptime(start_month, "%m/%Y")
         end_date = datetime.strptime(end_month, "%m/%Y")
     except ValueError:
-        print("Error: Please use YYYY-MM format for start and end months.")
+        print("Error: Please use MM/YYYY format for start and end months.")
+        return
+
+    # Ensure the start date is before the end date
+    if start_date > end_date:
+        print("Error: Start date must be before end date.")
         return
 
     monthly_sales = {}
+    
+    # Process each transaction
     for t in transactions:
-        transaction_date = datetime.strptime(t['date'], "%d/%m/%Y")
-        if t['id'] == grocery_id and start_date <= transaction_date <= end_date:
-            month = transaction_date.strftime("%Y-%m")
-            if month not in monthly_sales:
-                monthly_sales[month] = {'value': 0, 'stock': 0, 'count': 0}
-            monthly_sales[month]['value'] += float(t['payment'])
-            monthly_sales[month]['stock'] += int(t['quantity'])
-            monthly_sales[month]['count'] += 1
+        try:
+            transaction_date = datetime.strptime(t['date'], "%d/%m/%Y")
+            # Check if the transaction is for the specified grocery_id and within the date range
+            if t['id'] == grocery_id and start_date <= transaction_date <= end_date:
+                month = transaction_date.strftime("%Y-%m")
+                # Initialize monthly sales data if the month is not already present
+                if month not in monthly_sales:
+                    monthly_sales[month] = {'value': 0, 'stock': 0, 'count': 0}
+                # Update the monthly sales data
+                monthly_sales[month]['value'] += float(t['payment'])
+                monthly_sales[month]['stock'] += int(t['quantity'])
+                monthly_sales[month]['count'] += 1
+        except ValueError as e:
+            print(f"Error processing transaction date '{t['date']}': {e}")
+        except KeyError as e:
+            print(f"Error: Missing expected key in transaction data: {e}")
+        except TypeError as e:
+            print(f"Error with transaction data types: {e}")
 
+    # If no sales data is collected, notify the user
+    if not monthly_sales:
+        print("No sales data found for the specified grocery item in the given date range.")
+        return
+
+    # Prepare the filename and plot the graph
     file_start_date = start_date.strftime('%Y-%m-%d')
     file_end_date = end_date.strftime('%Y-%m-%d')
-
-
 
     graph_title = f"Monthly Sales for {groceries[grocery_id]['name']}. Grocery ID: {grocery_id}."
     save_file_name = f"{grocery_id}_{groceries[grocery_id]['name']}_{file_start_date}_to_{file_end_date}_sales"
     plot_graph(monthly_sales, graph_title, save_file_name)
+
 
 def display_total_sales(transactions, groceries, start_date, end_date):
     """
