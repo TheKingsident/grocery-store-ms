@@ -32,122 +32,125 @@ def authenticate_user(users):
     return False, None, None
 
 def main(grocery_file, transaction_file, user_file):
-    grocery_data = load_grocery_data(grocery_file)
-    transaction_data = load_transaction_data(transaction_file)
-    user_data = load_user_data(user_file)
-    # print(json.dumps(user_data, indent=4))
-    # print(json.dumps(transaction_data, indent=4))
-    # print(json.dumps(grocery_data, indent=4))
-    
-    authemticated, username, user_type = authenticate_user(user_data)
+    try:
+        grocery_data = load_grocery_data(grocery_file)
+        transaction_data = load_transaction_data(transaction_file)
+        user_data = load_user_data(user_file)
+        # print(json.dumps(user_data, indent=4))
+        # print(json.dumps(transaction_data, indent=4))
+        # print(json.dumps(grocery_data, indent=4))
+        
+        authemticated, username, user_type = authenticate_user(user_data)
 
-    if not authemticated:
-        print("Authentication failed")
-        return
-    
-    print(f"\nWelcome {username}!, you are logged in as a {user_type}.\n")
+        if not authemticated:
+            print("Authentication failed")
+            return
+        
+        print(f"\nWelcome {username}!, you are logged in as a {user_type}.\n")
 
-    while True:
-        if user_type == 'manager':
-            print("Menu:")
-            print("1. Enter sales transaction")
-            print("2. Add new grocery item")
-            print("3. Edit grocery item")
-            print("4. Search transactions by date")
-            print("5. Search transactions by product name")
-            print("6. Search transactions by product name and date range")
-            print("7. Display monthly sales")
-            print("8. Display grocery sales")
-            print("9. Disply total sales")
-            print("10. Exit\n")
-            choice = input("Select an option: ")
+        while True:
+            if user_type == 'manager':
+                print("Menu:")
+                print("1. Enter sales transaction")
+                print("2. Add new grocery item")
+                print("3. Edit grocery item")
+                print("4. Search transactions by date")
+                print("5. Search transactions by product name")
+                print("6. Search transactions by product name and date range")
+                print("7. Display monthly sales")
+                print("8. Display grocery sales")
+                print("9. Disply total sales")
+                print("10. Exit\n")
+                choice = input("Select an option: ")
 
-            if choice == '1':
-                record_sales_transaction(grocery_data, transaction_file, grocery_file)
+                if choice == '1':
+                    record_sales_transaction(grocery_data, transaction_file, grocery_file)
 
-            elif choice == '2':
-                add_new_grocery_item(grocery_file, grocery_data)
+                elif choice == '2':
+                    add_new_grocery_item(grocery_file, grocery_data)
 
-            elif choice == '3':
-                edit_grocery_item(grocery_file, grocery_data)
+                elif choice == '3':
+                    edit_grocery_item(grocery_file, grocery_data)
 
-            elif choice == '4':
-                search_date = input("\nEnter date (dd/mm/yyyy): ")
-                search_by_date(transaction_data, search_date)
-            
-            elif choice == "5":
-                search_name = search_name = input("\nEnter grocery name: ")
-                search_by_name(transaction_data, grocery_data, search_name)
-
-            elif choice == "6":
-                search_name = input("\nEnter product name: ")
-                start_date = input("Enter start date (dd/mm/yyyy): ")
-                end_date = input("Enter end date (dd/mm/yyyy): ")
-                search_by_name_and_date(transaction_data, grocery_data, search_name, start_date, end_date)
-
-            elif choice == "7":
-                start_month = input("\nEnter start month (mm/yyyy): ")
-                end_month = input("Enter end month (mm/yyyy): ")
-                display_monthly_sales(transaction_data, start_month, end_month)
-
-            elif choice == "8":
-                grocery_id = input("\nEnter grocery ID between 1 - 19: ")
-                start_month = input("Enter start month (mm/yyyy): ")
-                end_month = input("Enter end month (mm/yyyy): ")
-                display_product_sales(transaction_data,
-                                      grocery_data,
-                                      grocery_id,
-                                      start_month,
-                                      end_month)
+                elif choice == '4':
+                    search_date = input("\nEnter date (dd/mm/yyyy): ")
+                    search_by_date(transaction_data, search_date)
                 
-            elif choice == "9":
-                start_date = input("Enter start date (dd/mm/yyyy): ")
-                end_date = input("Enter end date (dd/mm/yyyy): ")
-                display_total_sales(transaction_data, grocery_data, start_date, end_date)
+                elif choice == "5":
+                    search_name = search_name = input("\nEnter grocery name: ")
+                    search_by_name(transaction_data, grocery_data, search_name)
 
-            elif choice == '10':
-                print("\nExiting program")
-                break
+                elif choice == "6":
+                    search_name = input("\nEnter product name: ")
+                    start_date = input("Enter start date (dd/mm/yyyy): ")
+                    end_date = input("Enter end date (dd/mm/yyyy): ")
+                    search_by_name_and_date(transaction_data, grocery_data, search_name, start_date, end_date)
+
+                elif choice == "7":
+                    start_month = input("\nEnter start month (mm/yyyy): ")
+                    end_month = input("Enter end month (mm/yyyy): ")
+                    display_monthly_sales(transaction_data, start_month, end_month)
+
+                elif choice == "8":
+                    grocery_id = input("\nEnter grocery ID between 1 - 19: ")
+                    start_month = input("Enter start month (mm/yyyy): ")
+                    end_month = input("Enter end month (mm/yyyy): ")
+                    display_product_sales(transaction_data,
+                                        grocery_data,
+                                        grocery_id,
+                                        start_month,
+                                        end_month)
+                    
+                elif choice == "9":
+                    start_date = input("\nEnter start date (dd/mm/yyyy): ")
+                    end_date = input("Enter end date (dd/mm/yyyy): ")
+                    display_total_sales(transaction_data, grocery_data, start_date, end_date)
+
+                elif choice == '10':
+                    print("\nExiting program")
+                    break
+
+                else:
+                    print("\nInvalid selection. Please try again.")
+
+            elif user_type == 'cashier':
+                print("Menu:")
+                print("1. Enter sales transaction")
+                print("2. Search transactions by date")
+                print("3. Search transactions by product name")
+                print("4. Search transactions by product name and date range")
+                print("5. Exit\n")
+                choice = input("\nSelect an option: ")
+
+                if choice == '1':
+                    record_sales_transaction(grocery_data, transaction_file, grocery_file)
+                
+                elif choice == '2':
+                    search_date = input("\nEnter date (dd/mm/yyyy): ")
+                    search_by_date(transaction_data, search_date)
+                
+                elif choice == "3":
+                    search_name = search_name = input("\nEnter grocery name: ")
+                    search_by_name(transaction_data, grocery_data, search_name)
+
+                elif choice == "4":
+                    search_name = input("\nEnter product name: ")
+                    start_date = input("Enter start date (dd/mm/yyyy): ")
+                    end_date = input("Enter end date (dd/mm/yyyy): ")
+                    search_by_name_and_date(transaction_data, grocery_data, search_name, start_date, end_date)
+
+                elif choice == '5':
+                    print("\nExiting program")
+                    break
+
+                else:
+                    print("\nInvalid selection. Please try again.")
 
             else:
-                print("\nInvalid selection. Please try again.")
-
-        elif user_type == 'cashier':
-            print("Menu:")
-            print("1. Enter sales transaction")
-            print("2. Search transactions by date")
-            print("3. Search transactions by product name")
-            print("4. Search transactions by product name and date range")
-            print("5. Exit\n")
-            choice = input("\nSelect an option: ")
-
-            if choice == '1':
-                record_sales_transaction(grocery_data, transaction_file, grocery_file)
-            
-            elif choice == '2':
-                search_date = input("\nEnter date (dd/mm/yyyy): ")
-                search_by_date(transaction_data, search_date)
-            
-            elif choice == "3":
-                search_name = search_name = input("\nEnter grocery name: ")
-                search_by_name(transaction_data, grocery_data, search_name)
-
-            elif choice == "4":
-                search_name = input("\nEnter product name: ")
-                start_date = input("Enter start date (dd/mm/yyyy): ")
-                end_date = input("Enter end date (dd/mm/yyyy): ")
-                search_by_name_and_date(transaction_data, grocery_data, search_name, start_date, end_date)
-
-            elif choice == '5':
-                print("\nExiting program")
+                print("\nInvalid user type.")
                 break
-
-            else:
-                print("\nInvalid selection. Please try again.")
-
-        else:
-            print("\nInvalid user type.")
-            break
+    except KeyboardInterrupt:
+        print("\nExiting program")
 
 
 if __name__ == "__main__":

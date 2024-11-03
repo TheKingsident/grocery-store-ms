@@ -67,11 +67,11 @@ def record_sales_transaction(grocery_data, transaction_file, grocery_file):
         grocery_data[grocery_id]['stock'] -= quantity
         save_transaction_data(transaction_file, [transaction_data])
         save_grocery_data(grocery_file, grocery_data)
-        print("Transaction recorded successfully.")
+        print("Transaction recorded successfully.\n")
         
     except ValueError:
-        print("Error: Invalid input for quantity. Please enter a valid integer.")
+        print("\nError: Invalid input for quantity. Please enter a valid integer.")
     except KeyError as e:
-        print(f"Data error: Missing key {e} in grocery data.")
+        print(f"\nData error: Missing key {e} in grocery data.")
     except Exception as e:
-        print(f"Unexpected error occurred: {e}")
+        print(f"\nUnexpected error occurred: {e}")
