@@ -2,11 +2,11 @@
 
 import sys
 import json
-from display_transactions import display_monthly_sales, display_product_sales, display_total_sales
-from grocery_operations import load_grocery_data, edit_grocery_item, add_new_grocery_item
-from search_transanctions import search_by_date, search_by_name, search_by_name_and_date
-from transaction_operations import load_transaction_data, record_sales_transaction
-from users_load import load_user_data
+from utils.display_transactions import display_monthly_sales, display_product_sales, display_total_sales
+from utils.grocery_operations import load_grocery_data, edit_grocery_item, add_new_grocery_item
+from utils.search_transanctions import search_by_date, search_by_name, search_by_name_and_date
+from utils.transaction_operations import load_transaction_data, record_sales_transaction
+from utils.users_load import load_user_data
 
 
 def authenticate_user(users):
