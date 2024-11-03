@@ -91,6 +91,29 @@ def plot_graph(monthly_sales, title, save_name):
         print(f"Error: An error occurred while plotting the graph: {e}")
 
 def display_monthly_sales(transactions, start_month, end_month):
+    """
+    Displays the monthly sales for a given range of months.
+    This function processes a list of transactions, filters them by the specified
+    date range, and calculates the total sales value, stock quantity, and number
+    of transactions for each month within the range. It then plots a graph of the
+    monthly sales values and the number of sales.
+    Args:
+        transactions (list): A list of transaction dictionaries. Each dictionary
+                             should contain 'date' (str in "dd/mm/yyyy" format),
+                             'payment' (float or str), and 'quantity' (int or str).
+        start_month (str): The start month in "MM/YYYY" format.
+        end_month (str): The end month in "MM/YYYY" format.
+    Returns:
+        None
+    Raises:
+        ValueError: If the date format in transactions or the start/end month is invalid.
+    Example:
+        transactions = [
+            {'date': '15/01/2023', 'payment': '100.50', 'quantity': '2'},
+            {'date': '20/02/2023', 'payment': '200.00', 'quantity': '3'}
+        ]
+        display_monthly_sales(transactions, '01/2023', '02/2023')
+    """
     try:
         # Convert start and end month strings to datetime objects
         start_date = datetime.strptime(start_month, "%m/%Y")
@@ -139,6 +162,32 @@ def display_monthly_sales(transactions, start_month, end_month):
     plot_graph(monthly_sales, grapth_title, save_file_name)
 
 def display_product_sales(transactions, groceries, grocery_id, start_month, end_month):
+    """
+    Display and plot the monthly sales data for a specific grocery item within a given date range.
+    Args:
+        transactions (list): A list of transaction dictionaries. Each dictionary should contain:
+            - 'date' (str): The date of the transaction in "dd/mm/yyyy" format.
+            - 'id' (int): The grocery item ID.
+            - 'payment' (str): The payment amount for the transaction.
+            - 'quantity' (str): The quantity of the item sold in the transaction.
+        groceries (dict): A dictionary of grocery items where the key is the grocery ID and the value is a dictionary containing:
+            - 'name' (str): The name of the grocery item.
+        grocery_id (int): The ID of the grocery item to display sales for.
+        start_month (str): The start month in "MM/YYYY" format.
+        end_month (str): The end month in "MM/YYYY" format.
+    Returns:
+        None
+    Raises:
+        ValueError: If the start or end month is not in the correct "MM/YYYY" format.
+        KeyError: If a transaction dictionary is missing expected keys.
+        TypeError: If there is a type error in the transaction data.
+    Notes:
+        - The function checks if the grocery_id exists in the groceries dictionary.
+        - It parses the start and end months and ensures the start date is before the end date.
+        - It processes each transaction to collect monthly sales data for the specified grocery item within the date range.
+        - If no sales data is found, it notifies the user.
+        - It prepares a filename and plots the graph using the collected sales data.
+    """
     # Check if grocery_id exists in groceries
     if grocery_id not in groceries:
         print("Error: Invalid product ID.")
@@ -193,6 +242,7 @@ def display_product_sales(transactions, groceries, grocery_id, start_month, end_
     save_file_name = f"{grocery_id}_{groceries[grocery_id]['name']}_{file_start_date}_to_{file_end_date}_sales"
     plot_graph(monthly_sales, graph_title, save_file_name)
 
+from datetime import datetime
 
 def display_total_sales(transactions, groceries, start_date, end_date):
     """
@@ -208,6 +258,11 @@ def display_total_sales(transactions, groceries, start_date, end_date):
         None: This function does not return any value. It prints an error message if the date format is incorrect
               and displays a bar chart of total sales by product within the specified date range.
     """
+    # Check input types
+    if not isinstance(transactions, list) or not isinstance(groceries, dict) or not isinstance(start_date, str) or not isinstance(end_date, str):
+        print("Error: Invalid input types. Please check the types of your arguments.")
+        return
+
     try:
         start_date = datetime.strptime(start_date, "%d/%m/%Y")
         end_date = datetime.strptime(end_date, "%d/%m/%Y")
@@ -217,16 +272,40 @@ def display_total_sales(transactions, groceries, start_date, end_date):
     
     grocery_total_sales = {}
     for t in transactions:
+        # Validate transaction structure
+        if not isinstance(t, dict) or 'date' not in t or 'id' not in t or 'payment' not in t:
+            print(f"Skipping invalid transaction: {t}")
+            continue
+
         try:
             transaction_date = datetime.strptime(t['date'], "%d/%m/%Y")
             if start_date <= transaction_date <= end_date:
                 grocery_id = t['id']
-                grocery_total_sales[grocery_id] =  grocery_total_sales.get(grocery_id, 0) + float(t['payment'])
+                
+                # Validate grocery ID exists in groceries
+                if grocery_id not in groceries:
+                    print(f"Warning: Grocery ID {grocery_id} not found in grocery data. Skipping transaction.")
+                    continue
+                
+                # Validate payment data
+                payment = t['payment']
+                if isinstance(payment, (int, float, str)) and str(payment).replace('.', '', 1).isdigit():
+                    grocery_total_sales[grocery_id] = grocery_total_sales.get(grocery_id, 0) + float(payment)
+                else:
+                    print(f"Skipping transaction {t} due to invalid payment data.")
         except ValueError:
             print(f"Skipping transaction due to invalid date format in transaction {t}")
-        except (TypeError, ValueError):
-            print(f"Skipping transaction {t} due to invalid payment data.")
+
+    # Check if there are any sales to display
+    if not grocery_total_sales:
+        print("\nNo sales found in the specified date range.")
+        return
 
     sorted_sales = sorted(grocery_total_sales.items(), key=lambda x: x[1], reverse=True)
     grocery_names = [groceries[grocery_id]['name'] for grocery_id, _ in sorted_sales]
+    
+    # Ensure grocery names match the sales
+    if len(grocery_names) != len(sorted_sales):
+        print("Warning: Some grocery names could not be found for the sales data.")
+    
     plot_bar_chart(sorted_sales, grocery_names)
