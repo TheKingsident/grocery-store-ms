@@ -5,20 +5,34 @@ def plot_bar_chart(sorted_sales, grocery_names):
     """
     Plots a bar chart using the given data.
     Args:
-        data (dict): A dictionary where keys are x-axis labels and values are y-axis values.
-        title (str): The title of the bar chart.
-        xlabel (str): The label for the x-axis.
-        ylabel (str): The label for the y-axis.
+        sorted_sales (list of tuple): A list of tuples where each tuple contains a grocery ID and its total sales value.
+        grocery_names (list of str): A list of grocery names corresponding to the sales values.
     """
-    sales_values = [value for _, value in sorted_sales]
+    try:
+        # Check if sorted_sales and grocery_names are not empty
+        if not sorted_sales or not grocery_names:
+            raise ValueError("Error: No sales data available to plot.")
 
-    plt.figure(figsize=(10, 6))
-    plt.barh(grocery_names, sales_values, color='skyblue')
-    plt.xlabel("Total Sales Value")
-    plt.title("Total Sales by Product")
-    plt.gca().invert_yaxis()  # To display the highest sales at the top
-    plt.savefig("total_sales_value.png")
-    plt.show()
+        # Check if the lengths of sorted_sales and grocery_names match
+        if len(sorted_sales) != len(grocery_names):
+            raise ValueError("Error: Mismatch between sales data and grocery names.")
+
+        sales_values = [value for _, value in sorted_sales]
+
+        plt.figure(figsize=(10, 6))
+        plt.barh(grocery_names, sales_values, color='skyblue')
+        plt.xlabel("Total Sales Value")
+        plt.title("Total Sales by Product")
+        plt.gca().invert_yaxis()  # To display the highest sales at the top
+
+        plt.savefig("total_sales_value.png")
+        plt.show()
+    
+    except ValueError as ve:
+        print(ve)
+    except Exception as e:
+        print(f"An error occurred while plotting the chart: {e}")
+
 
 def plot_graph(monthly_sales, title, save_name):
     months = sorted(monthly_sales.keys())
