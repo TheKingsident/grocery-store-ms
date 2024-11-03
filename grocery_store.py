@@ -9,7 +9,6 @@ from transaction_operations import load_transaction_data, record_sales_transacti
 from users_load import load_user_data
 
 
-
 def authenticate_user(users):
     """
     Authenticates a user by checking the provided username and password against

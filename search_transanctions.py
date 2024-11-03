@@ -18,20 +18,41 @@ def display_transactions(transactions):
     A formatted table of transactions. If the payment value is not a valid number, an error message is printed.
     If no transactions are provided, a message indicating no matching transactions is printed.
     """
-
+    
     if not transactions:
         print("\nNo matching transactions found.\n")
         return
     
     print(f"\n\n{'Date':<15} {'Time':<15} {'ID':<10} {'Quantity':<10} {'Payment':<10}")
     print('-' * 61)
-    for t in transactions:
+
+    for i, t in enumerate(transactions):
         try:
+            # Check for missing keys
+            required_keys = ['date', 'time', 'id', 'quantity', 'payment']
+            for key in required_keys:
+                if key not in t:
+                    raise KeyError(f"Transaction {i + 1} is missing the key '{key}'.")
+
+            # Check types of specific fields
+            if not isinstance(t['quantity'], (int, str)) or not isinstance(t['payment'], (float, int, str)):
+                raise TypeError(f"Transaction {i + 1} has invalid types for 'quantity' or 'payment'.")
+            
+            # Convert payment to float for formatting
             payment = float(t['payment'])
             print(f"{t['date']:<15} {t['time']:<15} {t['id']:<10} {t['quantity']:<10} {payment:<10.2f}")
+        
+        except KeyError as e:
+            print(f"\nError: {e}. Transaction skipped.")
+        
         except ValueError:
-            print("\nError: Payment value is not a valid number.")
+            print(f"\nError: Payment value '{t.get('payment')}' in transaction {i + 1} is not a valid number.")
+        
+        except TypeError as e:
+            print(f"\nError: {e}. Transaction skipped.")
+    
     print('\n')
+
 
 
 def search_by_date(transactions, date):
