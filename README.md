@@ -6,7 +6,6 @@
 - [Features](#features)
 - [Installation](#installation)
 - [Usage](#usage)
-- [File Structure](#file-structure)
 - [License](#license)
 
 ## Introduction
@@ -42,26 +41,6 @@ Run the main script with the required arguments:
 ```sh
 python [grocery_store.py](http://_vscodecontentref_/2) <transaction_file> <grocery_file> <user_file>
 ```
-
-## File Structure
-
-grocery-store-ms/
-├── __pycache__/
-├── .gitignore
-├── [groceries.csv](http://_vscodecontentref_/6)
-├── [grocery_store.py](http://_vscodecontentref_/7)
-├── LICENSE
-├── [README.md](http://_vscodecontentref_/8)
-├── [transactions.csv](http://_vscodecontentref_/9
-├── [users.csv](http://_vscodecontentref_/10)
-└── utils/
-    ├── __init__.py
-    ├── __pycache__/
-    ├── [display_transactions.py](http:_vscodecontentref_/11)
-    ├── [grocery_operations.py](http://_vscodecontentref_/12)
-    ├── [search_transanctions.py](http://_vscodecontentref_/13)
-    ├── [transaction_operations.py](http://_vscodecontentref_/14)
-    └── users_load.py
 
 ## License
 
