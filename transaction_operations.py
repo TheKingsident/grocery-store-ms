@@ -5,6 +5,13 @@ from grocery_operations import save_grocery_data
 def load_transaction_data(transaction_file):
     """
     Loads transaction data from a CSV file.
+    Args:
+        transaction_file (str): The path to the CSV file containing transaction data.
+    Returns:
+        list: A list of dictionaries, where each dictionary represents a transaction.
+    Raises:
+        FileNotFoundError: If the specified file does not exist.
+        IOError: If there is an error reading the file.
     """
     transactions = []
     try:
@@ -20,7 +27,15 @@ def load_transaction_data(transaction_file):
 
 def save_transaction_data(transaction_file, transactions):
     """
-    Saves transaction data to a specified CSV file.
+    Appends transaction data to a CSV file. If the file is empty, writes the header first.
+
+    Args:
+        transaction_file (str): The path to the CSV file where transaction data will be saved.
+        transactions (list of dict): A list of dictionaries, each containing transaction data with keys 
+                                     'date', 'time', 'id', 'quantity', and 'payment'.
+
+    Raises:
+        IOError: If there is an error writing to the file.
     """
     try:
         with open(transaction_file, mode='a', newline='') as file:
@@ -36,7 +51,17 @@ def save_transaction_data(transaction_file, transactions):
 
 def record_sales_transaction(grocery_data, transaction_file, grocery_file):
     """
-    Records a sales transaction, updates the grocery stock, and saves the transaction.
+    Records a sales transaction for a grocery store.
+    This function displays the current grocery items, prompts the user to enter a grocery ID and quantity sold,
+    updates the stock, and records the transaction details in the specified files.
+    Args:
+        grocery_data (dict): A dictionary containing grocery items with their details.
+        transaction_file (str): The file path where transaction data will be saved.
+        grocery_file (str): The file path where updated grocery data will be saved.
+    Raises:
+        ValueError: If the input for quantity is not a valid integer.
+        KeyError: If a required key is missing in the grocery data.
+        Exception: For any other unexpected errors.
     """
     print(f"\n{'ID':<10} {'Name':<20} {'Price':<10} {'Stock':<10}")
     print('-' * 50)
