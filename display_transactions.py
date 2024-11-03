@@ -11,11 +11,11 @@ def plot_bar_chart(sorted_sales, grocery_names):
     try:
         # Check if sorted_sales and grocery_names are not empty
         if not sorted_sales or not grocery_names:
-            raise ValueError("Error: No sales data available to plot.")
+            raise ValueError("\nError: No sales data available to plot.")
 
         # Check if the lengths of sorted_sales and grocery_names match
         if len(sorted_sales) != len(grocery_names):
-            raise ValueError("Error: Mismatch between sales data and grocery names.")
+            raise ValueError("\nError: Mismatch between sales data and grocery names.")
 
         sales_values = [value for _, value in sorted_sales]
 
@@ -33,25 +33,63 @@ def plot_bar_chart(sorted_sales, grocery_names):
     except Exception as e:
         print(f"An error occurred while plotting the chart: {e}")
 
-
 def plot_graph(monthly_sales, title, save_name):
-    months = sorted(monthly_sales.keys())
-    sales_values = [monthly_sales[month]['value'] for month in months]
-    sales_counts = [monthly_sales[month]['count'] for month in months]
-    sales_quantity = [monthly_sales[month]['stock'] for month in months]
+    """
+    Plots a graph of monthly sales data.
 
-    fig, ax = plt.subplots()
-    ax.plot(months, sales_values, label="Monthly Sales Value", color='b', marker='o')
-    ax.plot(months, sales_counts, label='Number of Sales', color='g', marker='x')
-    ax.plot(months, sales_quantity, label="Number of Items Sold", color="r", marker="*")
-    ax.set_title(title)
-    ax.set_xlabel("Month")
-    ax.set_ylabel("Sales Value / Count")
-    ax.legend()
-    plt.xticks(rotation=45)
-    plt.tight_layout()
-    plt.savefig(save_name)
-    plt.show()
+    Args:
+        monthly_sales (dict): A dictionary where keys are month names/identifiers
+                              and values are dictionaries with 'value', 'count', and 'stock'.
+        title (str): The title of the graph.
+        save_name (str): The filename to save the plot.
+
+    Returns:
+        None
+    """
+    if not monthly_sales:
+        print("Error: No sales data available to plot.")
+        return
+
+    months = sorted(monthly_sales.keys())
+    
+    # Check if all required keys are present
+    try:
+        sales_values = [monthly_sales[month]['value'] for month in months]
+        sales_counts = [monthly_sales[month]['count'] for month in months]
+        sales_quantity = [monthly_sales[month]['stock'] for month in months]
+    except KeyError as e:
+        print(f"Error: Missing data for month: {e}. Please check the monthly sales data structure.")
+        return
+
+    # Check if all sales values are numeric
+    if not all(isinstance(value, (int, float)) for value in sales_values):
+        print("Error: Sales values must be numeric.")
+        return
+
+    if not all(isinstance(count, int) for count in sales_counts):
+        print("Error: Sales counts must be integers.")
+        return
+
+    if not all(isinstance(stock, int) for stock in sales_quantity):
+        print("Error: Stock quantities must be integers.")
+        return
+
+    try:
+        fig, ax = plt.subplots()
+        ax.plot(months, sales_values, label="Monthly Sales Value", color='b', marker='o')
+        ax.plot(months, sales_counts, label='Number of Sales', color='g', marker='x')
+        ax.plot(months, sales_quantity, label="Number of Items Sold", color="r", marker="*")
+        ax.set_title(title)
+        ax.set_xlabel("Month")
+        ax.set_ylabel("Sales Value / Count")
+        ax.legend()
+        plt.xticks(rotation=45)
+        plt.tight_layout()
+        plt.savefig(save_name)
+        plt.show()
+    except Exception as e:
+        print(f"Error: An error occurred while plotting the graph: {e}")
+
 
 def display_monthly_sales(transactions, start_month, end_month):
     try:
