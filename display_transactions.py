@@ -242,8 +242,6 @@ def display_product_sales(transactions, groceries, grocery_id, start_month, end_
     save_file_name = f"{grocery_id}_{groceries[grocery_id]['name']}_{file_start_date}_to_{file_end_date}_sales"
     plot_graph(monthly_sales, graph_title, save_file_name)
 
-from datetime import datetime
-
 def display_total_sales(transactions, groceries, start_date, end_date):
     """
     Displays a bar chart of total sales by product within a specified date range.
