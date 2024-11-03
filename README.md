@@ -1,5 +1,4 @@
-# grocery-store-ms
-Grocery Store Management System
+# Grocery Store Management System
 
 ## Table of Contents
 
@@ -53,12 +52,12 @@ grocery-store-ms/
 ├── [grocery_store.py](http://_vscodecontentref_/7)
 ├── LICENSE
 ├── [README.md](http://_vscodecontentref_/8)
-├── [transactions.csv](http://_vscodecontentref_/9)
+├── [transactions.csv](http://_vscodecontentref_/9
 ├── [users.csv](http://_vscodecontentref_/10)
 └── utils/
     ├── __init__.py
     ├── __pycache__/
-    ├── [display_transactions.py](http://_vscodecontentref_/11)
+    ├── [display_transactions.py](http:_vscodecontentref_/11)
     ├── [grocery_operations.py](http://_vscodecontentref_/12)
     ├── [search_transanctions.py](http://_vscodecontentref_/13)
     ├── [transaction_operations.py](http://_vscodecontentref_/14)
