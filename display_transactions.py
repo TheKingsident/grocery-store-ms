@@ -90,29 +90,53 @@ def plot_graph(monthly_sales, title, save_name):
     except Exception as e:
         print(f"Error: An error occurred while plotting the graph: {e}")
 
-
 def display_monthly_sales(transactions, start_month, end_month):
     try:
+        # Convert start and end month strings to datetime objects
         start_date = datetime.strptime(start_month, "%m/%Y")
         end_date = datetime.strptime(end_month, "%m/%Y")
     except ValueError:
-        print("Error: Please use YYYY/MM format for start and end months.")
+        print("Error: Please use MM/YYYY format for start and end months.")
         return
-    
+
+    if not transactions:
+        print("No transactions available to display.")
+        return
+
     monthly_sales = {}
-    for t in transactions:
-        transaction_date = datetime.strptime(t['date'], "%d/%m/%Y")
-        if start_date <= transaction_date <= end_date:
-            month = transaction_date.strftime("%y-%m")
-            if month not in monthly_sales:
-                monthly_sales[month] = {'value': 0, 'stock': 0, 'count': 0}
-            monthly_sales[month]['value'] += float(t['payment'])
-            monthly_sales[month]['stock'] += int(t['quantity'])
-            monthly_sales[month]['count'] += 1
     
-    grapth_tile = "Monthly Sales Values and Number of Sales"
+    for t in transactions:
+        try:
+            # Extract and convert the transaction date
+            transaction_date = datetime.strptime(t['date'], "%d/%m/%Y")
+            
+            # Check if the transaction date is within the specified range
+            if start_date <= transaction_date <= end_date:
+                month = transaction_date.strftime("%y-%m")
+                
+                # Initialize month entry if it doesn't exist
+                if month not in monthly_sales:
+                    monthly_sales[month] = {'value': 0, 'stock': 0, 'count': 0}
+
+                # Safely get payment and quantity values
+                payment = float(t.get('payment', 0))  # Defaults to 0 if 'payment' key is missing
+                quantity = int(t.get('quantity', 0))  # Defaults to 0 if 'quantity' key is missing
+                
+                monthly_sales[month]['value'] += payment
+                monthly_sales[month]['stock'] += quantity
+                monthly_sales[month]['count'] += 1
+
+        except ValueError:
+            print(f"Error: Invalid transaction data found: {t}")
+            continue  # Skip this transaction and continue with the next
+
+    if not monthly_sales:
+        print("No sales data found for the specified date range.")
+        return
+
+    grapth_title = "Monthly Sales Values and Number of Sales"
     save_file_name = f"{start_date.strftime('%Y-%m-%d')}_to_{end_date.strftime('%Y-%m-%d')}_sales"
-    plot_graph(monthly_sales, grapth_tile, save_file_name)
+    plot_graph(monthly_sales, grapth_title, save_file_name)
 
 def display_product_sales(
         transactions,
