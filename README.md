@@ -59,7 +59,7 @@ grocery-store-ms/
 
 1. **Clone the repository**:
    ```bash
-   git clone https://github.com/your-username/grocery-store-ms.git
+   git clone https://github.com/TheKingsident/grocery-store-ms.git
    cd grocery-store-ms
    ```
 
