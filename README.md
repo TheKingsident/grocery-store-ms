@@ -210,7 +210,7 @@ Contributions are welcome! Please fork the repository and create a pull request 
 
 ## License
 
-Distributed under the MIT License. See `LICENSE` for more information.
+Distributed under the MIT License. See [LICENSE](LICENSE) for more information.
 
 ---
 
