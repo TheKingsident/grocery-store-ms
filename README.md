@@ -133,6 +133,9 @@ The `utils/display_transactions.py` module provides functionality to display tra
 - **Display Product Sales**: `display_product_sales` shows sales of a specific grocery item over a period.
 - **Display Total Sales**: `display_total_sales` computes the total sales in a specified date range.
 
+#### Example Data Display
+
+
 ---
 
 ## Error Handling
