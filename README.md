@@ -112,6 +112,7 @@ Depending on the user type, different menus are presented:
 The `utils/grocery_operations.py` module contains functions to manage grocery items, including:
 - **Adding New Items**: `add_new_grocery_item` prompts the user to enter details for a new item and saves it to `groceries.csv`.
 - **Editing Items**: `edit_grocery_item` allows managers to modify details of existing items in `groceries.csv`.
+- **Reading Grocery Data**: `load_grocery_data` reads and loads grocery item data from `groceries.csv`.
 
 ### 4. Transaction Operations
 
