@@ -63,7 +63,7 @@ grocery-store-ms/
    cd grocery-store-ms
    ```
 
-2. **Install required dependencies** (if any):
+2. **Install required dependencies**:
    This project does not have specific Python package dependencies beyond the standard library. However, ensure you have Python 3 installed.
 
 ---
