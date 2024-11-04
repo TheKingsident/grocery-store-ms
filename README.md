@@ -217,5 +217,5 @@ Special thanks to all contributors and the Python community for the extensive li
 ## Contact
 
 Project Author: Kingsley Usa (cakemurderer)  
-GitHub: (TheKingsident)[https://github.com/TheKingsident]  
-Email: [softwareengineeringcake@gmail.com]
+GitHub: [TheKingsident](https://github.com/TheKingsident) 
+Email: [softwareengineeringcake@gmail.com](mailto:softwareengineeringcake@gmail.com)
