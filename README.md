@@ -119,6 +119,7 @@ The `utils/grocery_operations.py` module contains functions to manage grocery it
 The `utils/transaction_operations.py` module provides functions for recording and managing transactions:
 - **Recording Transactions**: `record_sales_transaction` allows users to log a new sales transaction, updating `transactions.csv`.
 - **Loading Transaction Data**: `load_transaction_data` reads transactions from `transactions.csv`.
+- **Saving Transaction Data**: `save_transaction_data` writes updated transaction data back to `transactions.csv`.
 
 ### 5. Search Functionality
 
