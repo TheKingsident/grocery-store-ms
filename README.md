@@ -135,6 +135,9 @@ The `utils/display_transactions.py` module provides functionality to display tra
 
 #### Example Data Display
 
+Here is an example of the data displayed by the system:
+
+![Example Data Display](https://github.com/TheKingsident/grocery-store-ms/blob/main/public/2024-02-01_to_2024-10-01_sales.png)
 
 ---
 
